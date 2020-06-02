@@ -1,0 +1,44 @@
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.card-deck .card {
+  min-width: 220px;
+}
+
+#cabecalho{
+  background-image: url(../img/img_cabecalho.jpeg);
+  height: 600px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+h5{
+  position: relative;
+  top: -250px;
+}
+
+#cabecalho nav{
+  position: relative;
+  top:-250px;
+}
+
+#login{
+  text-decoration: none;
+  position: relative;
+  top:-250px;
+}
