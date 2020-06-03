@@ -61,10 +61,10 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
         <h1 class="h2">Exclusão - Alunos</h1>
 
-        <form method="post" action="prof_exc.php">
+        <form method="post" action="usuario_exc.php">
 
         <div id="acoes" align="right">
-            <a href="prof_menu.php" class="btn btn-secondary">Fechar sem Salvar</a>
+            <a href="usuario_menu.php" class="btn btn-secondary">Fechar sem Salvar</a>
             <input type="submit" class="btn btn-danger" value="Excluir" />
         </div>
     </div>
@@ -74,80 +74,79 @@
         if (isset($sucesso)) echo "<div class='alert alert-success'>$sucesso</div>";
     ?>
 
-    <div class="row">
-        <div class="form-group col-md-4">
-        <label>Nome</label>
+<div class="row">
+        <div class="form-group col-md-8">
+        <label>Digite seu nome completo</label>
         <input type="text"
             name="nome"
             maxlength="20"
             class="form-control"
-            placeholder="Digite o nome"
+            placeholder="Nome completo"
             value="<?php echo $row[1];?>" />
         </div>
 
-        <div class="form-group col-md-8">
-        <label>CPF</label>
+        <div class="form-group col-md-3">
+        <label>Digite seu CPF</label>
         <input type="text"
             name="cpf"
-            maxlength="20"
+            maxlength="40"
             class="form-control"
-            placeholder="Digite o CPF"
+            placeholder="CPF"
             value="<?php echo $row[3];?>" />
         </div>
     </div>
 
     <div class="row">
-        <div class="form-group col-md-12">
-        <label>Endereço de E-mail</label>
-        <input type="email"
-            name="email"
-            maxlength="40"
-            class="form-control"
-            placeholder="Digite o e-mail"
-            value="<?php echo $row[6];?>" />
-        </div>
-    </div>
-
-    <div class="row">
         <div class="form-group col-md-6">
-        <label>Telefone</label>
-        <input type="tel"
-            name="tel"
-            maxlength="10"
-            class="form-control"
-            placeholder="Digite seu telefone" 
-            value="<?php echo $row[7];?>"/>
-        </div>
-
-        <div class="form-group col-md-6">
-        <label>endereco</label>
-        <input type="text"
-            name="endereco"
-            maxlength="10"
-            class="form-control"
-            placeholder="Digite seu endereço" 
-            value="<?php echo $row[4];?>"/>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-6">
-            <label>Numero</label>
+            <label>Endereço</label>
             <input type="text"
-                name="numero"
-                maxlength="10"
-                class="form-control"
-                placeholder="Digite seu numero"
-                value="<?php echo $row[5];?>" />
-            </div>
-            <div class="form-group col-md-6">
-        <label>data_nasc</label>
-        <input type="date"
-            name="data_nasc"
-            value="<?php echo $row[2];?>"
+            name="endereco"
+            maxlength="80"
             class="form-control"
-             />
+            placeholder="Digite seu endereço"
+            value="<?php echo $row[5];?>" />
         </div>
+        <div class='form-group col-md-3'>
+            <label>Numero</label>
+            <input type="text" 
+            name="numero" class="form-control" placeholder="N°" value="<?php echo $row[6];?>">
+        </div>
+        <div class='form-group col-md-3'>
+            <label>Complemento</label>
+            <input type="text" 
+            name="complemento" class="form-control" placeholder="Bloco/Quadra" value="">
         </div>
     </div>
+    
+    <div class="row">
+        <div class="form-group col-md-2">
+            <label>Peso</label>
+            <input type="number" name="peso" class="form-control" value="<?php echo $row[4];?>" placeholder="Digite seu peso">
+        </div>
+        <div class="form-group col-md-2">
+            <label >Altura</label>
+            <input type="text" name="altura" class="form-control"value="<?php echo $row[10];?>" placeholder="Digite sua altura">
+        </div>
+        <div class="form-group col-md-2">
+            <label >Data de Nascimento</label>
+            <input type="date" name="data_nasc" value="<?php echo $row[2];?>" class="form-control" >
+        </div>
+        <div class="form-group col-md-2">
+            <label>Telefone</label>
+            <input type="tel" name="tel" value="<?php echo $row[8];?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Plano Desejado</label>
+            <select name="plano" id="" class="form-control">
+                <option value="">Mensal</option>
+                <option value="">Trimestral</option>
+                <option value="">Semestral</option>
+            </select>
+        </div>
+    </div>
+    
+    
+        
     <input type="hidden" name="enviou" value="Sim" />
     <input type="hidden" name="cod" value="<?=$row[0]; ?>" />
     </form>

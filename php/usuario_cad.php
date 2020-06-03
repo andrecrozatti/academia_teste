@@ -51,6 +51,12 @@
         } else {
             $dat = mysqli_real_escape_string($dbc, trim($_POST['data_nasc']));
         }
+        //Verifica se há um email
+        if (empty($_POST['email'])) {
+            $erros[] = "Você esqueceu de digitar o seu email.";
+        } else {
+            $e = mysqli_real_escape_string($dbc, trim($_POST['email']));
+        }
 
         //Verifica se há um tefone
         if (empty($_POST['tel'])) {
@@ -72,9 +78,9 @@
 
         if (empty($erros)) {
             $q = "INSERT INTO alunos 
-                    (nome, cpf, endereco, numero, peso, altura, data_nasc, tel, senha)
+                    (nome, cpf, endereco, numero, peso, altura, data_nasc, email, tel, senha)
                 VALUES
-                    ('$n', '$cpf', '$end', '$num', $peso, $a, '$dat', '$t', SHA1('DWEB2.$p'))";
+                    ('$n', '$cpf', '$end', '$num', $peso, $a, '$dat','$e', '$t', SHA1('DWEB2.$p'))";
             $r = mysqli_query($dbc, $q);
            
             if ($r) {
@@ -82,7 +88,7 @@
                            <p>Seu registro foi incluído com sucesso</p>
                            <p>Aguarde... Redirecionando</p>";
                 echo "<meta HTTP-EQUIV='refresh'
-                    CONTENT='3;URL=usuario_menu.php'>";
+                    CONTENT='3;URL=login_user.php'>";
             } else {
                 
                 $erro = "<h2><b>Erro!</b></h2>
@@ -210,12 +216,8 @@
             <input type="tel" name="tel" value="<?php if (isset($_POST['tel'])) echo $_POST['tel']; ?>" class="form-control">
         </div>
         <div class="form-group col-md-4">
-            <label>Plano Desejado</label>
-            <select name="plano" id="" class="form-control">
-                <option value="">Mensal</option>
-                <option value="">Trimestral</option>
-                <option value="">Semestral</option>
-            </select>
+            <label>E-mail</label>
+            <input type="email" name="email" class="form-control" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" placeholder="Digite sua email">
         </div>
     </div>
     

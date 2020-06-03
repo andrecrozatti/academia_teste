@@ -14,7 +14,7 @@
                 <a class="nav-link" href="prof_menu.php">
                   Professores
                 </a>
-                <a class="nav-link" href="">
+                <a class="nav-link" href="aula_menu.php">
                   Aulas
                 </a>
               </li>
