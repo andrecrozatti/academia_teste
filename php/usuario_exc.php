@@ -1,6 +1,6 @@
 <?php
 
-    $titulo = '';
+    $titulo = 'Top Fit - Exclusão de aulas';
 
     include_once('./cabecalho_adm.php');
     include_once('./menulateral_adm.php');

@@ -1,5 +1,5 @@
 <?php
-    $titulo='Menu Administrador - Top Fit';
+    $titulo='Top Fit - Menu Administrador';
     session_start();
     include_once('./cabecalho_adm.php');
     include_once('./menulateral_adm.php');

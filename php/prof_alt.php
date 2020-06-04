@@ -1,6 +1,6 @@
 <?php
 
-    $titulo = '';
+    $titulo = 'Top Fit - Alteração de Professores';
 
     include_once('./cabecalho_adm.php');
     include_once('./menulateral_adm.php');

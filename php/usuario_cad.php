@@ -1,5 +1,5 @@
 <?php
-    $titulo = 'Loja de Miniaturas - Cadastro de Usuário';
+    $titulo = 'Top Fit - Cadastro de Alunos';
     
 
     if (isset($_POST['enviou'])) {

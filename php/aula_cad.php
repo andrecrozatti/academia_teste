@@ -1,5 +1,8 @@
 <?php
-    $titulo = 'Loja de Miniaturas - Cadastro de Aulas';
+    $titulo = 'Top Fit - Cadastro de aulas';
+    include_once('./menulateral_adm.php');
+    include_once('./cabecalho_adm.php');
+  
     
 
     if (isset($_POST['enviou'])) {
@@ -79,7 +82,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matricula</title>
+    
     
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/pricing/">
 

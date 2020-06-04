@@ -1,5 +1,5 @@
 <?php
-    $titulo = "Loja de Miniaturas - Menu de Usuários";
+    $titulo = "Top Fit - Menu de Usuários";
 
     include_once('./cabecalho_adm.php');
     include_once('./menulateral_adm.php');

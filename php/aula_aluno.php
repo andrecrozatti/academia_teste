@@ -1,184 +1,139 @@
 <?php
-    $titulo = 'Top Fit - Inscrição nas  Aulas';
+    $titulo = "Top fit - Matricula nas aulas";
+
+    include_once('./cabecalho_user.php');
+    include_once('./menulateral_user.php');
+
+    require_once('./conexao.php');
+    require_once('./insert.php');
     
-
-    if (isset($_POST['enviou'])) {
-        require_once('./conexao.php');
-
-        $erros = array();
-        //Verifica se há um nome de aula
-        if (empty($_POST['nome_aula'])) {
-            $erros[] = "Você esqueceu de digitar o seu primeiro nome.";
-        } else {
-            $n = mysqli_real_escape_string($dbc, trim($_POST['nome_aula']));
+    if(isset($_POST['save']) && $_POST['save'] == "salvar"){
+        $elementos = $_POST['aula']; 
+        foreach($elementos as $e) { 
+             insereReg($e); 
         }
 
-        //Verifica se há hora
-        if (empty($_POST['hora'])) {
-            $erros[] = "Você esqueceu de digitar o seu último nome.";
-        } else {
-            $hora = mysqli_real_escape_string($dbc, trim($_POST['hora']));
-        }
-
-        //Verifica se há um duracao
-        if (empty($_POST['duracao'])) {
-            $erros[] = "Você esqueceu de digitar a duracao .";
-        } else {
-            $dur = mysqli_real_escape_string($dbc, trim($_POST['duracao']));
-        }
-
-        //Verifica se há um professor
-        if (empty($_POST['professor'])) {
-            $erros[] = "Você esqueceu de digitar o seu professor.";
-        } else {
-            $prof = mysqli_real_escape_string($dbc, trim($_POST['professor']));
-        }
-        //Verifica se há um semana
-        if (empty($_POST['semana'])) {
-            $erros[] = "Você esqueceu de digitar o seu semana.";
-        } else {
-            $semana = mysqli_real_escape_string($dbc, trim($_POST['semana']));
-        }
-        
-
-        if (empty($erros)) {
-            $q = "INSERT INTO aulas 
-                    (nome_aula, hora, duracao, cod_prof, semana)
-                VALUES
-                    ('$n', '$hora', '$dur', '$prof', '$semana')";
-            $r = mysqli_query($dbc, $q);
-            echo"$q";
-            if ($r) {
-                $sucesso = "<h2><b>Sucesso!</b></h2>
-                           <p>Seu registro foi incluído com sucesso</p>
-                           <p>Aguarde... Redirecionando</p>";
-                echo "<meta HTTP-EQUIV='refresh'
-                    CONTENT='3;URL=menu_adm.php'>";
-            } else {
-                
-                $erro = "<h2><b>Erro!</b></h2>
-                        <p>Você não pode ser registrado devido a um erro no sistema.
-                        Pedimos desculpas por qualquer incoveniente.</p>";}
-          
-        } else {
-
-        $erro = "<h2><b>Erro!</b></h2>
-                <p>Ocorreram o(s) seguinte(s) erro(s): <br />";
-        foreach ($erros as $msg) {
-            $erro .= "- $msg <br />";
-        }
-        $erro .= "</p><p>Por favor, tente novamente.</p>";
-        }
     }
 
-    //tabela de professores
+
+
+    // Número de registros para mostrar por página
+    $exiba = 10;
+    $saida = "";
+    //Captura busca
+    $where = mysqli_real_escape_string($dbc, trim(isset($_GET['q'])) ? $_GET['q'] : '');
+
+    $ordem = '';
+
+    // // Determina quantas páginas existem
+    // if (isset($_GET['p']) && is_numeric($_GET['p'])) {
+    //     $pagina = $_GET['p'];
+    // } else { // Não foi determinada
+    //     // Conta a qtd de registros
+    //     $q = "SELECT COUNT(cod) FROM alunos WHERE nome like '%$where%' ";
+    //     $r = @mysqli_query($dbc, $q);
+    //     $row = @mysqli_fetch_array($r, MYSQLI_NUM);
+    //     $qtde = $row[0];
+    //     // Calcule o número de página
+    //     if ($qtde > $exiba) {
+    //         // A função ceil arredondando o valor pra cima ex. 5,05 é 6.
+    //         $pagina = ceil($qtde/$exiba);
+    //     } else {
+    //         $pagina = 1;
+    //     }
+    // }
+
+    // Determina uma posição no BD para começar a
+    // retornar os resultados
+    if (isset($_GET['s']) && is_numeric($_GET['s'])) {
+        $inicio = $_GET['s'];
+    } else {
+        $inicio = 0;
+    }
+
+
+    //Determina a ordenação, por Padrao é ID
+    $ordem = isset($_GET['ordem']) ? $_GET['ordem'] : 'cod';
+
+    //Determina a ordem de classificação
+    switch ($ordem) {
+        case 'cod': $order_by = 'cod_aula';
+                   break;
+        case 'n' : $order_by = 'nome_aula';
+                   break;
+        case 'e' : $order_by = 'duracao';
+                   break;
+        default:
+                   $order_by = 'cod_aula';
+                   $ordem    = 'cod_aula';
+                   break;
+    }
+
+
+    $q = "SELECT * 
+            FROM aulas
+            ORDER BY $order_by
+            LIMIT $inicio, $exiba";
+    $r = @mysqli_query($dbc, $q); //@ -> Não apresenta erro, se tiver.
+    
+
+        while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+            $saida .=  '<tr>
+            <td>' . $row['cod_aula'] . '</td>
+            <td>' . $row['nome_aula'] . ' ' . '</td>
+            <td>' . $row['duracao'] . '</td>
+            <td class="actions">
+                <input type="checkbox" name="aula[]" value="'.$row['cod_aula'].'"/>
+            </td>
+            </tr>';
+        };
+        
+    
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matricula</title>
-    
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/pricing/">
-
-<!-- Bootstrap core CSS -->
-<link href="../dist/css/bootstrap.css" rel="stylesheet">
-<style>
-.bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-    }
-}
-</style>
-
-</head>
-<body>
-<main role="main" class="col-md-9 m-sm-auto  col-lg-10 px-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Cadastro de uma Aula</h1>
-
-        <form method="post" action="aula_cad.php">
-
-        <!-- <div id="acoes" align="right">
-            <a href="usuario_menu.php" class="btn btn-secondary">Fechar sem Salvar</a>
-            <input type="submit" class="btn btn-primary" value="Salvar" />
-        </div> -->
-    </div>
-
-    <?php
-        if (isset($erro)) echo "<div class='alert alert-danger'>$erro</div>";
-        if (isset($sucesso)) echo "<div class='alert alert-success'>$sucesso</div>";
+<main role="main" class="col-md-9 ml-sm-auto pt-3 col-lg-10 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3">    
+        <div class="col-md-3">
+            <h2>Aulas</h2>
+        </div>
+            <div class="col-md-6">
+            <?php
+         if (isset($erro)) echo "<div class='alert alert-danger'>$erro</div>";
+         if (isset($sucesso)) echo "<div class='alert alert-success'>$sucesso</div>";
     ?>
-
-    <div class="row">
-        <div class="form-group col-md-8">
-        <label>Digite o nome da aula </label>
-        <input type="text"
-            name="nome_aula"
-            maxlength="20"
-            class="form-control"
-            placeholder="Nome da aula"
-            value="<?php if (isset($_POST['nome_aula'])) echo $_POST['nome_aula']; ?>" />
-        </div>
-
-        <div class="form-group col-md-2">
-        <label>Hora</label>
-        <input type="time"
-            name="hora"
-            class="form-control"
-            value="<?php if (isset($_POST['hora'])) echo $_POST['hora']; ?>" />
         </div>
     </div>
-
-    <div class="row">
-        <div class="form-group col-md-2">
-            <label>Duração</label>
-            <input type="time"
-            name="duracao"
-            class="form-control"
-            value="<?php if (isset($_POST['duracao'])) echo $_POST['duracao']; ?>" />
-        </div>
-        <div class='form-group col-md-3'>
-            <label>Professor</label>
-            <select name="professor" id="" class="form-control">
-                <option value="1">Cleiton</option>
-                <option value="2">Vagner</option>
-                <option value="4">Ronaldo de Souza</option>
-            </select>
-        </div>
-        <div class='form-group col-md-3'>
-            <label>Dia Semana</label>
-            <select name="semana" id="" class="form-control">
-                <option>Segunda</option>
-                <option>Terça</option>
-                <option>Quarta</option>
-                <option>Quinta</option>
-                <option>Sexta</option>
-                <option>Sabado</option>
-            </select>
-        </div>
+    <div id="list" >
+        <form action="aula_aluno.php" class="row" method="POST">
+        <div class="table-responsive col-md-12">
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="10%"><strong>
+                    <a href="aula_aluno.php?ordem=cod">Código</a></strong></th>
+                <th width="25%"><strong>
+                    <a href="aula_aluno.php?ordem=n">Nome da aula</a></strong></th>
+                <th width="25%"><strong>
+                    <a href="aula_aluno.php?ordem=e">duracao</a></strong></th>
+                <th width="20%"><strong>
+                    Ações</strong></th>
+            </tr>
+        </thead><tbody>
+            <?php echo $saida;?>
+            <tr>
+            <td colspan="3" align="right"><input type="submit" class="btn btn-primary" value="Matricular"></td>
+            <td><a href="menu_user.php" class="btn btn-secondary">Fechar sem Salvar</a></td>
+            <td><input type="hidden" value="salvar" name="save"/></td>
+            </tr>
+            </tbody></table></div>
+        </form>
+        
     </div>
+    <div id="bottom" class="row">
+        <ul class="pagination">
+            <?php if (isset($pag)) echo $pag; ?>
+        </ul>
     </div>
-    <input type="hidden" name="enviou" value="Sim" />
-    <div id="acoes" align="right">
-            <a href="aula_menu.php" class="btn btn-secondary">Fechar sem Salvar</a>
-            <input type="submit" class="btn btn-primary" value="Salvar" />
-        </div>
-    </form>
-
-</main>
-</body>
-</html>
-
-
+<?php
+    include_once('./rodape.php');
+?>
