@@ -15,7 +15,7 @@
     //$rowa =  mysqli_fetch_array($ra);
     while ($rowa = mysqli_fetch_array($ra, MYSQLI_ASSOC)) {
         $saida .= '<div class="card border-dark mb-3" style="max-width: 18rem; margin-right: 10px">
-        <div class="card-header" style="font-size:20px">Aula de'.$rowa['semana'].'</div>
+        <div class="card-header" style="font-size:20px">Aula de '.$rowa['semana'].'</div>
             <div class="card-body text-dark">
             <h5 class="card-title">'. $rowa['nome_aula'].'</h5>
             </div>
